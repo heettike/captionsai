@@ -1,0 +1,7 @@
+node_modules/
+test_image.txt
+test.txt
+test_upload.html
+open.env
+.env
+caption-generator-backend/.gitignore#

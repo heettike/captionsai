@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaptionAI - Image Caption Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>CaptionAI</h1>
+        <p>Turn your images into witty captions</p>
+    </header>
+    <main>
+        <section id="upload-section">
+            <div id="drop-zone">
+                <p>Drag & Drop your image here</p>
+                <p>or</p>
+                <button id="file-select">Choose File</button>
+            </div>
+            <p class="file-types">Supports JPG, PNG, GIF (max 5MB)</p>
+        </section>
+        <section id="preview-section" style="display: none;">
+            <img id="preview-image" alt="Uploaded image preview">
+            <div id="loading-spinner"></div>
+        </section>
+        <section id="results-section" style="display: none;">
+            <h2>Image Classification</h2>
+            <p id="image-description"></p>
+            <h2>Generated Captions</h2>
+            <div id="captions-container"></div>
+            <button id="regenerate">Generate New Captions</button>
+            <button id="start-over">Start Over</button>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
