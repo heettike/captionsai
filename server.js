@@ -100,42 +100,47 @@ app.get('/test', (req, res) => {
 app.post('/upload', upload.single('image'), async (req, res) => {
   console.log('Upload route hit');
   if (!req.file) {
-      console.log('No file uploaded');
-      return res.status(400).json({ error: 'No file uploaded.' });
+    console.log('No file uploaded');
+    return res.status(400).json({ error: 'No file uploaded.' });
   }
 
   try {
-      const imagePath = req.file.path;
-      console.log('Image path:', imagePath);
-      console.log('File exists:', fs.existsSync(imagePath));
+    const imagePath = req.file.path;
+    console.log('Image path:', imagePath);
+    console.log('File exists:', fs.existsSync(imagePath));
 
-      console.log('Starting image classification');
-      const imageDescription = await classifyImage(imagePath);
-      console.log('Image classified as:', imageDescription);
+    console.log('Starting image classification');
+    const imageDescription = await classifyImage(imagePath);
+    console.log('Image classified as:', imageDescription);
 
-      console.log('Generating AI caption');
-      const captions = await generateAICaption(imageDescription);
-      console.log('Captions generated:', captions);
+    console.log('Generating AI caption');
+    const captions = await generateAICaption(imageDescription);
+    console.log('Captions generated:', captions);
 
-      res.json({
-          message: 'File uploaded successfully',
-          filename: req.file.filename,
-          imageDescription: imageDescription,
-          captions: captions
-      });
+    res.json({
+      message: 'File uploaded successfully',
+      filename: req.file.filename,
+      imageDescription: imageDescription,
+      captions: captions
+    });
   } catch (error) {
-      console.error('Error processing image:', error);
-      res.status(500).json({
-          error: 'Error processing image',
-          details: error.message,
-          stack: error.stack
-      });
+    console.error('Error processing image:', error);
+    res.status(500).json({
+      error: 'Error processing image',
+      details: error.message,
+      stack: error.stack
+    });
   }
 });
-
 console.log('Starting server...');
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!', details: err.message });
+});
+
 // At the end of your server.js
 module.exports = app;
