@@ -74,7 +74,7 @@ async function generateAICaption(imageDescription) {
   try {
     console.log('Generating caption for:', imageDescription);
     const response = await openai.chat.completions.create({
-      model: "4o mini",
+      model: "gpt-3.5-turbo",
       messages: [
         { role: "system", content: "You are a helpful assistant that generates witty Instagram captions." },
         { role: "user", content: `Generate a witty and engaging Instagram caption for an image described as: ${imageDescription}` }
