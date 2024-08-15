@@ -58,33 +58,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function uploadFile(file) {
-        const formData = new FormData();
-        formData.append('image', file);
-      
-        try {
-            console.log('Uploading file...');
-            const response = await fetch('http://localhost:3000/upload', {
-                method: 'POST',
-                body: formData
-            });
-      
-            console.log('Response status:', response.status);
-            const result = await response.json();
-      
-            if (!response.ok) {
-                throw new Error(result.error || 'An error occurred during upload');
-            }
-      
-            console.log('Upload successful:', result);
-            displayResults(result);
-        } catch (error) {
-            console.error('Upload error:', error);
-            alert(`Upload failed: ${error.message}`);
-        } finally {
-            loadingSpinner.style.display = 'none';
-        }
+async function uploadFile(file) {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    console.log('Uploading file...');
+    const response = await fetch('/upload', {
+      method: 'POST',
+      body: formData
+    });
+
+    console.log('Response status:', response.status);
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.indexOf("application/json") !== -1) {
+      const result = await response.json();
+      if (!response.ok) {
+        console.error('Server error:', result);
+        throw new Error(result.error || 'An error occurred during upload');
+      }
+      console.log('Upload successful:', result);
+      displayResults(result);
+    } else {
+      const text = await response.text();
+      console.error('Unexpected response:', text);
+      throw new Error('Server returned an unexpected response');
     }
+  } catch (error) {
+    console.error('Upload error:', error);
+    alert(`Upload failed: ${error.message}`);
+  } finally {
+    loadingSpinner.style.display = 'none';
+  }
+}
 
     function displayResults(result) {
         console.log('Result received:', result);
